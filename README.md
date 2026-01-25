@@ -250,7 +250,20 @@ Keep it readable. The goal is clean logic, not fancy tricks.
 
 ---
 
-## 10) Next Step (turn this into portfolio-grade)
+
+## 10) Add Git
+
+```text
+cd ~/projects/pyspark-local-intro
+git init
+git add .
+git commit -m "Initial PySpark local training project"
+git branch -M main
+git remote add origin https://github.com/frankrunfola-training/pyspark-local-intro.git
+git push -u origin main
+```
+
+## 11) Next Step (turn this into portfolio-grade)
 
 If you want this to look like real DE work without making it huge:
 
