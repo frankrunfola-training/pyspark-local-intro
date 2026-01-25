@@ -1,0 +1,6 @@
+customer_id,first_name,last_name,state,signup_date
+1,Frank,Runfola,NY,2025-01-10
+2,Ana,Lopez,NC,2025-02-03
+3,Sam,Kim,CA,2025-02-15
+4,,Patel,TX,2025-03-01
+5,Jen,Chen,CA,2025-03-05
