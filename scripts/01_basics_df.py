@@ -10,7 +10,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # ---------------------------------------------------------------------------------
 # Run cmd: 
 #   cd /projects/pyspark-local-intro    
-#   python -m scripts.00_smoke_test.py
+#   python -m scripts.01_basics_df
 # ---------------------------------------------------------------------------------
 # Description:
 #   DataFrame basics: read CSVs, schema, select, filter, withColumn.
@@ -29,8 +29,8 @@ customers = (
     .option("inferSchema", True)
     .csv("data/raw/customers.csv")
 )
-#print("\n--- Customers schema ---")
-#customers.printSchema()
+print("\n--- Customers schema ---")
+customers.show(3, truncate=False)
 
 ###################################################################################
 # Return full Transactions data
@@ -40,12 +40,16 @@ txns = (
     .option("inferSchema", True)
     .csv("data/raw/transactions.csv")
 )
-#print("\n--- Transactions schema ---")
-#txns.printSchema()
+print("\n--- Transactions schema ---")
+txns.show(3, truncate=False)
+
+
 
 ###################################################################################
+# SELECT + FILTER
 # Return  "customer_id", "first_name", "state" for CA customers
 ###################################################################################
+'''
 ca_customers_df = (
     customers
     .select("customer_id", "first_name", "state")
@@ -54,18 +58,42 @@ ca_customers_df = (
 print("\n--- Select + filter example (CA customers) ---")
 ca_customers_df.show(truncate=False)
 print("ca_customers_df.count:", ca_customers_df.count())
+'''
+
+
 
 ###################################################################################
+# WITHCOLUMN
 # Return transactions with amount > 100,  plus a new column "amount_with_tax"
 ###################################################################################
-print("\n--- Create derived column (amount_bucket) ---")
+'''
 txns2 = txns.withColumn(
     "amount_bucket",
     F.when(F.col("amount") < 20, "small")
      .when(F.col("amount") < 100, "medium")
      .otherwise("large")
 )
-txns2.select("txn_id", "amount", "amount_bucket").show()
+print("\n--- Create derived column (amount_bucket) ---")
+txns2.show(truncate=False)
+'''
+
+
+###################################################################################
+# WITHCOLUMN
+# Return customers plus a new column "state_full"
+###################################################################################
+'''
+customers2 = customers.withColumn(
+    "state_full",
+    F.when(F.col("state") == "CA", "California")
+    .when(F.col("state") == "NY", "New York")
+    .when(F.col("state") == "TX", "Texas")
+    .when(F.col("state") == "WA", "Washington")
+    .otherwise("Other")
+)
+print("\n--- Create derived column (state_full) ---")
+customers2.show(truncate=False)
+'''
 
 
 spark.stop()

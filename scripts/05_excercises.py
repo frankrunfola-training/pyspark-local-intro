@@ -1,64 +1,286 @@
 import sys
 from pathlib import Path
-PROJECT_ROOT = Path(__file__).resolve().parents[1] # add project root to sys.path so `import src.<FOLDER>` works
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # add project root to sys.path so `import src.<FOLDER>` works
 sys.path.insert(0, str(PROJECT_ROOT))
 
 ###################################################################################
-# File   : 05_exercises.py
+# File   : 05_excercises.py
 # Author : Frank Runfola
 # Date   : 1/25/2026
 # ---------------------------------------------------------------------------------
-# Run cmd: 
-#   cd /projects/pyspark-local-intro    
-#   python -m scripts.05_exercises
+# Run cmd:
+#   cd /projects/pyspark-local-intro
+#   python -m scripts.05_excercises
 # ---------------------------------------------------------------------------------
 # Description:
-#   Fill in TODOs. Keep it readable.
+#   Combined exercises (Select/Filter + Cleaning/Quarantine + KPIs + Joins).
+#   20 exercises total. Start easy, get progressively more difficult.
+#   Fill in TODOs. No hints.
 ###################################################################################
 
 from pyspark.sql import functions as F
 from src.spark_utils import get_spark
 
-spark = get_spark("05_exercises")
+spark = get_spark("05_excercises")
 
-customers = spark.read.option("header", True).option("inferSchema", True).csv("data/raw/customers.csv")
-txns = spark.read.option("header", True).option("inferSchema", True).csv("data/raw/transactions.csv")
+customers = (
+    spark.read.option("header", True)
+    .option("inferSchema", True)
+    .csv("data/raw/customers.csv")
+)
 
-###################################################################################
-# EXERCISE 1: Fix customer names
-# TODO:
-# - trim first/last name
-# - create full_name = "First Last"
-###################################################################################
-# customers_fixed = ...
-
-###################################################################################
-# EXERCISE 2: Quarantine transaction rules
-# TODO:
-# - quarantine if amount <= 0
-# - quarantine if customer_id not in customers list
-# - produce: txns_clean2, txns_quarantine2
-# Hint: use a left_anti join or a broadcast join
-###################################################################################
-# txns_clean2 = ...
-# txns_quarantine2 = ...
+txns = (
+    spark.read.option("header", True)
+    .option("inferSchema", True)
+    .csv("data/raw/transactions.csv")
+)
 
 ###################################################################################
-# EXERCISE 3: KPI table
-# TODO:
-# - output one row per customer_id
-# - columns: txn_count, total_spend, last_txn_ts
-# - order by total_spend desc and show top 10
+# EXERCISE 01 (Easy)
+# Goal: Select only these columns from customers: customer_id, first_name, state
 ###################################################################################
-# kpi2 = ...
+ex01_df = (
+    # TODO
+)
+
+# ex01_df.show(truncate=False)
 
 ###################################################################################
-# EXERCISE 4: Write results
-# TODO:
-# - write txns_clean2 and kpi2 to data/out/
+# EXERCISE 02 (Easy)
+# Goal: Filter customers where state == "CA"
+# Return columns: customer_id, first_name, state
 ###################################################################################
-# txns_clean2.write.mode("overwrite").parquet("data/out/txns_clean2")
-# kpi2.write.mode("overwrite").parquet("data/out/customer_kpis2")
+ex02_df = (
+    # TODO
+)
+
+# ex02_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 03 (Easy)
+# Goal: Filter txns where amount > 50
+# Return columns: txn_id, customer_id, amount
+###################################################################################
+ex03_df = (
+    # TODO
+)
+
+# ex03_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 04 (Easy)
+# Goal: Filter txns where merchant == "ElectroMart"
+# Return columns: txn_id, customer_id, merchant, amount
+###################################################################################
+ex04_df = (
+    # TODO
+)
+
+# ex04_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 05 (Easy)
+# Goal: Filter txns where customer_id is in {1,2,3}
+# Return columns: txn_id, customer_id, txn_ts, amount
+###################################################################################
+ex05_df = (
+    # TODO
+)
+
+# ex05_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 06 (Easy)
+# Goal: Filter customers where first_name is missing OR blank
+# Return columns: customer_id, first_name, last_name
+###################################################################################
+ex06_df = (
+    # TODO
+)
+
+# ex06_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 07 (Easy -> Medium)
+# Goal: Filter txns where amount is between 10 and 100 inclusive
+# Return columns: txn_id, customer_id, amount, merchant
+###################################################################################
+ex07_df = (
+    # TODO
+)
+
+# ex07_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 08 (Easy -> Medium)
+# Goal: Filter txns where merchant != "GroceryTown" AND amount between 10 and 100 inclusive
+# Return columns: txn_id, customer_id, amount, merchant
+###################################################################################
+ex08_df = (
+    # TODO
+)
+
+# ex08_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 09 (Medium)
+# Goal: Customers who signed up on or after 2025-03-01
+# Return columns: customer_id, signup_date
+###################################################################################
+ex09_df = (
+    # TODO
+)
+
+# ex09_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 10 (Medium)
+# Goal: Create a new column on txns: amount_bucket with values:
+# - "small" if amount < 20
+# - "medium" if amount < 100
+# - "large" otherwise
+# Return columns: txn_id, amount, amount_bucket
+###################################################################################
+ex10_df = (
+    # TODO
+)
+
+# ex10_df.show(truncate=False)
+
+###################################################################################
+# EXERCISE 11 (Medium)
+# Goal: Standardize customers:
+# - trim first_name and last_name
+# - uppercase state
+# Return full standardized customers DataFrame
+###################################################################################
+customers_std = (
+    # TODO
+)
+
+# customers_std.show(truncate=False)
+
+###################################################################################
+# EXERCISE 12 (Medium)
+# Goal: Create customers_quarantine where first_name is missing OR blank
+# And customers_clean as the remaining records
+###################################################################################
+customers_quarantine = (
+    # TODO
+)
+
+customers_clean = (
+    # TODO
+)
+
+# print("customers_clean:", customers_clean.count(), "customers_quarantine:", customers_quarantine.count())
+
+###################################################################################
+# EXERCISE 13 (Medium -> Hard)
+# Goal: Create txns_quarantine where:
+# - amount <= 0 OR customer_id is null
+# And txns_clean as the remaining records
+###################################################################################
+txns_quarantine = (
+    # TODO
+)
+
+txns_clean = (
+    # TODO
+)
+
+# print("txns_clean:", txns_clean.count(), "txns_quarantine:", txns_quarantine.count())
+
+###################################################################################
+# EXERCISE 14 (Hard)
+# Goal: Add a quarantine_reason column to txns_quarantine with values:
+# - "non_positive_amount" when amount <= 0
+# - "missing_customer_id" when customer_id is null
+# (If both happen, choose one consistent rule)
+###################################################################################
+txns_quarantine_reasoned = (
+    # TODO
+)
+
+# txns_quarantine_reasoned.show(truncate=False)
+
+###################################################################################
+# EXERCISE 15 (Hard)
+# Goal: Quarantine transactions where customer_id does NOT exist in customers_clean
+# Produce:
+# - txns_bad_fk
+# - txns_good_fk
+###################################################################################
+txns_bad_fk = (
+    # TODO
+)
+
+txns_good_fk = (
+    # TODO
+)
+
+# print("txns_good_fk:", txns_good_fk.count(), "txns_bad_fk:", txns_bad_fk.count())
+
+###################################################################################
+# EXERCISE 16 (Hard)
+# Goal: Join txns_good_fk to customers_clean (left join) and return:
+# txn_id, customer_id, first_name, state, amount, merchant
+###################################################################################
+enriched_txns = (
+    # TODO
+)
+
+# enriched_txns.show(truncate=False)
+
+###################################################################################
+# EXERCISE 17 (Hard)
+# Goal: Build customer KPIs from txns_good_fk:
+# - txn_count
+# - total_spend (rounded to 2 decimals)
+# - avg_spend (rounded to 2 decimals)
+# Return one row per customer_id
+###################################################################################
+customer_kpis = (
+    # TODO
+)
+
+# customer_kpis.show(truncate=False)
+
+###################################################################################
+# EXERCISE 18 (Hard -> Very Hard)
+# Goal: Add last_txn_ts (max txn_ts) to customer_kpis
+# Return columns: customer_id, txn_count, total_spend, avg_spend, last_txn_ts
+###################################################################################
+customer_kpis_with_last = (
+    # TODO
+)
+
+# customer_kpis_with_last.show(truncate=False)
+
+###################################################################################
+# EXERCISE 19 (Very Hard)
+# Goal: Create customer_analytics by joining customers_clean to customer_kpis_with_last.
+# Fill null KPI values with:
+# - txn_count = 0
+# - total_spend = 0.0
+# - avg_spend = 0.0
+###################################################################################
+customer_analytics = (
+    # TODO
+)
+
+# customer_analytics.orderBy(F.desc("total_spend")).show(truncate=False)
+
+###################################################################################
+# EXERCISE 20 (Very Hard)
+# Goal: Write outputs (overwrite mode) to:
+# - data/out/customers_clean
+# - data/out/customers_quarantine
+# - data/out/txns_good_fk
+# - data/out/txns_bad_fk
+# - data/out/customer_analytics
+###################################################################################
+# TODO
 
 print("\nDone (but only if you actually finished the TODOs).")
 spark.stop()
