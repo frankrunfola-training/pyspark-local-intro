@@ -17,8 +17,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 #   - read CSVs
 #   - view schema + sample rows
 #   - select + filter
-#   - withColumn for derived columns
-#
+#   - withColumn for derived columns#
 # Notes:
 #   - This is intentionally small + local (training mode).
 #   - inferSchema is convenient for demos; production pipelines often use explicit schemas.
@@ -37,16 +36,16 @@ spark.sparkContext.setLogLevel("ERROR")  # reduce Spark startup noise for local 
 # - verify Spark can infer schema and load header columns correctly
 ###################################################################################
 customers = (
-    spark.read.option("header", True)          # first row contains column names
-    .option("inferSchema", True)               # infer types (ok for training)
+    spark.read.option("header", True)       # first row contains column names
+    .option("inferSchema", True)            # infer types (ok for training)
     .csv("data/raw/customers.csv")
 )
 
 print("\n--- Customers schema (types) ---")
-customers.printSchema()                        # schema = column names + data types
+customers.printSchema()                     # schema = column names + data types
 
 print("\n--- Customers sample rows ---")
-customers.show(3, truncate=False)              # show a few rows without truncating values
+customers.show(3, truncate=False)           # show a few rows without truncating values
 
 ###################################################################################
 # 2) LOAD TRANSACTIONS (raw input)

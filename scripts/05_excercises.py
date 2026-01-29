@@ -37,16 +37,19 @@ txns = (
 
 ###################################################################################
 # EXERCISE 01 (Easy)
+#----------------------------------------------------------------------------------
 # Goal: Select only these columns from customers: customer_id, first_name, state
 ###################################################################################
 ex01_df = (
     # TODO
+    customers.select("customer_id", "first_name", "state")
 )
 
 # ex01_df.show(truncate=False)
 
 ###################################################################################
 # EXERCISE 02 (Easy)
+#----------------------------------------------------------------------------------
 # Goal: Filter customers where state == "CA"
 # Return columns: customer_id, first_name, state
 ###################################################################################
@@ -58,6 +61,7 @@ ex02_df = (
 
 ###################################################################################
 # EXERCISE 03 (Easy)
+#----------------------------------------------------------------------------------
 # Goal: Filter txns where amount > 50
 # Return columns: txn_id, customer_id, amount
 ###################################################################################
@@ -69,6 +73,7 @@ ex03_df = (
 
 ###################################################################################
 # EXERCISE 04 (Easy)
+#----------------------------------------------------------------------------------
 # Goal: Filter txns where merchant == "ElectroMart"
 # Return columns: txn_id, customer_id, merchant, amount
 ###################################################################################
@@ -80,6 +85,7 @@ ex04_df = (
 
 ###################################################################################
 # EXERCISE 05 (Easy)
+#----------------------------------------------------------------------------------
 # Goal: Filter txns where customer_id is in {1,2,3}
 # Return columns: txn_id, customer_id, txn_ts, amount
 ###################################################################################
@@ -102,6 +108,7 @@ ex06_df = (
 
 ###################################################################################
 # EXERCISE 07 (Easy -> Medium)
+#----------------------------------------------------------------------------------
 # Goal: Filter txns where amount is between 10 and 100 inclusive
 # Return columns: txn_id, customer_id, amount, merchant
 ###################################################################################
@@ -113,6 +120,7 @@ ex07_df = (
 
 ###################################################################################
 # EXERCISE 08 (Easy -> Medium)
+#----------------------------------------------------------------------------------
 # Goal: Filter txns where merchant != "GroceryTown" AND amount between 10 and 100 inclusive
 # Return columns: txn_id, customer_id, amount, merchant
 ###################################################################################
@@ -124,6 +132,7 @@ ex08_df = (
 
 ###################################################################################
 # EXERCISE 09 (Medium)
+#----------------------------------------------------------------------------------
 # Goal: Customers who signed up on or after 2025-03-01
 # Return columns: customer_id, signup_date
 ###################################################################################
@@ -135,6 +144,7 @@ ex09_df = (
 
 ###################################################################################
 # EXERCISE 10 (Medium)
+#----------------------------------------------------------------------------------
 # Goal: Create a new column on txns: amount_bucket with values:
 # - "small" if amount < 20
 # - "medium" if amount < 100
@@ -144,11 +154,11 @@ ex09_df = (
 ex10_df = (
     # TODO
 )
-
 # ex10_df.show(truncate=False)
 
 ###################################################################################
 # EXERCISE 11 (Medium)
+#----------------------------------------------------------------------------------
 # Goal: Standardize customers:
 # - trim first_name and last_name
 # - uppercase state
@@ -162,6 +172,7 @@ customers_std = (
 
 ###################################################################################
 # EXERCISE 12 (Medium)
+#----------------------------------------------------------------------------------
 # Goal: Create customers_quarantine where first_name is missing OR blank
 # And customers_clean as the remaining records
 ###################################################################################
@@ -177,6 +188,7 @@ customers_clean = (
 
 ###################################################################################
 # EXERCISE 13 (Medium -> Hard)
+#----------------------------------------------------------------------------------
 # Goal: Create txns_quarantine where:
 # - amount <= 0 OR customer_id is null
 # And txns_clean as the remaining records
@@ -193,6 +205,7 @@ txns_clean = (
 
 ###################################################################################
 # EXERCISE 14 (Hard)
+#----------------------------------------------------------------------------------
 # Goal: Add a quarantine_reason column to txns_quarantine with values:
 # - "non_positive_amount" when amount <= 0
 # - "missing_customer_id" when customer_id is null
@@ -206,6 +219,7 @@ txns_quarantine_reasoned = (
 
 ###################################################################################
 # EXERCISE 15 (Hard)
+#----------------------------------------------------------------------------------
 # Goal: Quarantine transactions where customer_id does NOT exist in customers_clean
 # Produce:
 # - txns_bad_fk
@@ -223,6 +237,7 @@ txns_good_fk = (
 
 ###################################################################################
 # EXERCISE 16 (Hard)
+#----------------------------------------------------------------------------------
 # Goal: Join txns_good_fk to customers_clean (left join) and return:
 # txn_id, customer_id, first_name, state, amount, merchant
 ###################################################################################
@@ -234,6 +249,7 @@ enriched_txns = (
 
 ###################################################################################
 # EXERCISE 17 (Hard)
+#----------------------------------------------------------------------------------
 # Goal: Build customer KPIs from txns_good_fk:
 # - txn_count
 # - total_spend (rounded to 2 decimals)
@@ -248,6 +264,7 @@ customer_kpis = (
 
 ###################################################################################
 # EXERCISE 18 (Hard -> Very Hard)
+#----------------------------------------------------------------------------------
 # Goal: Add last_txn_ts (max txn_ts) to customer_kpis
 # Return columns: customer_id, txn_count, total_spend, avg_spend, last_txn_ts
 ###################################################################################
@@ -259,6 +276,7 @@ customer_kpis_with_last = (
 
 ###################################################################################
 # EXERCISE 19 (Very Hard)
+#----------------------------------------------------------------------------------
 # Goal: Create customer_analytics by joining customers_clean to customer_kpis_with_last.
 # Fill null KPI values with:
 # - txn_count = 0
@@ -273,6 +291,7 @@ customer_analytics = (
 
 ###################################################################################
 # EXERCISE 20 (Very Hard)
+#----------------------------------------------------------------------------------
 # Goal: Write outputs (overwrite mode) to:
 # - data/out/customers_clean
 # - data/out/customers_quarantine
