@@ -129,4 +129,5 @@ def test_kpi_aggregation(spark):
     assert float(out[0]["avg_spend"]) == pytest.approx(15.12)
 
     assert out[1]["customer_id"] == 2
-    assert out[1]["]()
+    assert out[1]["txn_count"] == 1
+    assert float(out[1]["total_spend"]) == pytest.approx(5.00)
