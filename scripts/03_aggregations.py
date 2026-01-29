@@ -7,11 +7,11 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # File   : 03_aggregations.py
 # Author : Frank Runfola
 # Date   : 1/25/2026
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Run cmd:
 #   cd /projects/pyspark-local-intro
 #   python -m scripts.03_aggregations
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Description:
 #   Aggregations + window functions to produce customer spend KPIs.
 #

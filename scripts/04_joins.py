@@ -7,11 +7,11 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # File   : 04_joins.py
 # Author : Frank Runfola
 # Date   : 1/25/2026
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Run cmd:
 #   cd /projects/pyspark-local-intro
 #   python -m scripts.04_joins
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Description:
 #   Join patterns used in real data engineering:
 #   - fact table (transactions) + dimension table (customers)

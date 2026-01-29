@@ -7,11 +7,11 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # File   : 02_cleaning.py
 # Author : Frank Runfola
 # Date   : 1/25/2026
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Run cmd:
 #   cd /projects/pyspark-local-intro
 #   python -m scripts.02_cleaning
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Description:
 #   Cleaning + basic data quality rules.
 #   Output pattern:

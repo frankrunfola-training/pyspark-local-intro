@@ -7,11 +7,11 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # File   : 00_smoke_test.py
 # Author : Frank Runfola
 # Date   : 1/25/2026
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Run cmd:
 #   cd /projects/pyspark-local-intro
 #   python -m scripts.00_smoke_test
-# ---------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Description:
 #   Smoke test:
 #   - confirm Spark starts locally
