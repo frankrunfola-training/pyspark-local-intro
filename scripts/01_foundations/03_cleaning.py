@@ -44,24 +44,23 @@ txns = (
 ###################################################################################
 # 1) Standardize and trim text (basic normalization)
 # Why:
-# - prevents false mismatches (e.g., " ca " vs "CA")
-# - keeps downstream joins/filters consistent
+#   - prevents false mismatches (e.g., " ca " vs "CA")
+#   - keeps downstream joins/filters consistent
 ###################################################################################
 customers_std = (
     customers
-    .withColumn("first_name", F.trim(F.col("first_name")))         # remove leading/trailing spaces
-    .withColumn("last_name", F.trim(F.col("last_name")))           # remove leading/trailing spaces
-    .withColumn("state", F.upper(F.trim(F.col("state"))))          # normalize to uppercase state codes
+    .withColumn("first_name", F.trim(F.col("first_name")))  # remove leading/trailing spaces
+    .withColumn("last_name", F.trim(F.col("last_name")))    # remove leading/trailing spaces
+    .withColumn("state", F.upper(F.trim(F.col("state"))))   # normalize to uppercase state codes
 )
 
 ###################################################################################
 # 2) Customer quarantine rules (basic but realistic)
 # Why quarantine:
-# - you don't silently drop bad data
-# - you can measure quality and debug upstream issues
-#
-# Rule:
-# - missing first_name (null or empty)
+#   - you don't silently drop bad data
+#    - you can measure quality and debug upstream issues
+## Rule:
+#   - missing first_name (null or empty)
 ###################################################################################
 cust_quarantine = customers_std.where(
     F.col("first_name").isNull() | (F.col("first_name") == "")
@@ -74,8 +73,8 @@ cust_clean = customers_std.subtract(cust_quarantine)
 ###################################################################################
 # 3) Transaction quarantine rules (basic but realistic)
 # Rules:
-# - amount <= 0 (non-positive payment)
-# - customer_id missing (can't link to a customer)
+#   - amount <= 0 (non-positive payment)
+#   - customer_id missing (can't link to a customer)
 ###################################################################################
 txn_quarantine = txns.where(
     (F.col("amount") <= 0) |
@@ -88,8 +87,8 @@ txn_clean = txns.subtract(txn_quarantine)
 # -----------------------------
 # Simple run summary (counts)
 # Why:
-# - makes runs auditable
-# - easy sanity check during development
+#   - makes runs auditable
+#   - easy sanity check during development
 # -----------------------------
 print("\n--- Customers clean/quarantine counts ---")
 print("clean:", cust_clean.count(), "quarantine:", cust_quarantine.count())
