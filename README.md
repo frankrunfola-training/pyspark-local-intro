@@ -17,34 +17,72 @@ java -version
 
 ---
 
-## Setup
+## Setup + Run
 
 ### 1) Create and activate a virtual environment
 
 **Windows (PowerShell)**
 ```powershell
-python3 -m venv .venv
-.venv\Scripts\Activate.ps1
-python3 -m pip install --upgrade pip
+# Create venv
+python -m venv .venv
+
+# Activate venv
+.\.venv\Scripts\Activate.ps1
+
+# Install deps + install this repo as a package (src/ layout)
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e .
 ```
 
 **WSL/Linux/macOS**
 ```bash
-rm -rf .venv                         # optional: delete existing venv
-python3 -m venv .venv                # create venv
-source .venv/bin/activate            # activate
+# Optional: reset venv
+rm -rf .venv
+
+# Create + activate venv
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install deps + install this repo as a package (src/ layout)
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e .
 ```
 
-### 2) VS Code interpreter
-- `Ctrl+Shift+P` → **Python: Select Interpreter**
-- Select the `.venv`
+---
+
+### 2) Run scripts (module-run from repo root)
+
+**Pattern**
+```bash
+python -m scripts.<FOLDER>.<FILE>
+```
+
+**Examples (Foundations)**
+```bash
+python -m scripts.01_foundations.01_smoke_test
+python -m scripts.01_foundations.02_basics_df
+python -m scripts.01_foundations.03_cleaning
+python -m scripts.01_foundations.04_aggregations
+python -m scripts.01_foundations.05_joins
+```
 
 ---
+
+### 3) VS Code interpreter (important)
+
+If VS Code shows import warnings (ex: `pyspark.sql could not be resolved`), it’s almost always using the wrong Python.
+
+1. `Ctrl+Shift+P` → **Python: Select Interpreter**
+2. Select the repo venv:
+   - **Windows:** `<repo>\.venv\Scripts\python.exe`
+   - **WSL/Linux/macOS:** `<repo>/.venv/bin/python`
+3. Reload if needed: `Ctrl+Shift+P` → **Developer: Reload Window**
+
+
+---
+
 
 ## Project layout
 
