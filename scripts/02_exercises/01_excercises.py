@@ -286,11 +286,10 @@ print("txns_good_fk:", txns_good_fk.count(), "txns_bad_fk:", txns_bad_fk.count()
 #------------------------------------------------------------------------
 # Goal: Quarantine orphan customers where customer_id has NO matching
 #       transactions in txns_clean
-#
-# Produce:
+## Produce:
 # - customers_orphan   (customers with zero transactions)
 # - customers_active   (customers with 1+ transactions)
-#
+
 # Rules:
 # - Join key: customer_id
 # - Treat null/blank customer_id in customers_clean as orphan automatically

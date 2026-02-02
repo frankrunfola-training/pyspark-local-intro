@@ -95,12 +95,11 @@ txns2 = (
     txns
     .withColumn(
         "amount_bucket",
-        F.when(F.col("amount") < 20, "small")
-         .when(F.col("amount") < 100, "medium")
+        F.when(F.col("amount") < 20, F.lit("small"))
+         .when(F.col("amount") < 100, F.lit("medium"))
          .otherwise("large")
     )
 )
-
 print("\n--- Create derived column (amount_bucket) ---")
 txns2.show(truncate=False)
 '''
@@ -118,10 +117,10 @@ customers2 = (
     customers
     .withColumn(
         "state_full",
-        F.when(F.col("state") == "CA", "California")
-         .when(F.col("state") == "NY", "New York")
-         .when(F.col("state") == "TX", "Texas")
-         .when(F.col("state") == "WA", "Washington")
+        F.when(F.col("state") == "CA", F.lit("California"))
+         .when(F.col("state") == "NY", F.lit("New York"))
+         .when(F.col("state") == "TX", F.lit("Texas"))
+         .when(F.col("state") == "WA", F.lit("Washington"))
          .otherwise("Other")
     )
 )

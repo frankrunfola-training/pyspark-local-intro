@@ -24,21 +24,21 @@ from training_pyspark_local.spark_utils import get_spark
 spark = get_spark("05_joins")
 spark.sparkContext.setLogLevel("ERROR")  # keep local console output readable
 
-# -----------------------------
+# -----------------------------------------------------------------------
 # Read cleaned datasets (Silver-like)
 # Why:
 # - joining on cleaned data reduces nulls, bad keys, and confusing results
-# -----------------------------
+# -----------------------------------------------------------------------
 customers_clean = spark.read.parquet("data/out/customers_clean")
 txns_clean = spark.read.parquet("data/out/txns_clean")
 
 # Read KPI output (Gold-like)
 kpis = spark.read.parquet("data/out/customer_kpis")
 
-# -----------------------------
+# -----------------------------------------------------------------------
 # Sanity checks (counts)
 # Count triggers Spark jobs — intentionally used here for quick validation.
-# -----------------------------
+# -----------------------------------------------------------------------
 customers_count = customers_clean.count()
 txns_count = txns_clean.count()
 kpis_count = kpis.count()

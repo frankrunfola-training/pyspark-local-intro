@@ -57,13 +57,12 @@ customers_std = (
 ## Rule:
 #   - missing first_name (null or empty)
 ###################################################################################
-cust_quarantine = customers_std.where(
-    F.col("first_name").isNull() | (F.col("first_name") == "")
-)
+bad_rows_cust = F.col("first_name").isNull() | F.trim((F.col("first_name") == ""))
+cust_quarantine = customers_std.filter(bad_rows_cust)
 
 # Clean customers are the remainder
 # NOTE: subtract works for small training data. At scale, you often prefer joins (anti-join).
-cust_clean = customers_std.subtract(cust_quarantine)
+cust_clean = customers_std.filter(~bad_rows_cust)
 
 ###################################################################################
 # 3) Transaction quarantine rules (basic but realistic)
@@ -71,9 +70,9 @@ cust_clean = customers_std.subtract(cust_quarantine)
 #   - amount <= 0 (non-positive payment)
 #   - customer_id missing (can't link to a customer)
 ###################################################################################
+bad_rows_txn =  F.col("amount") <= 0 | (F.col("customer_id").isNull())
 txn_quarantine = txns.filter(
-    (F.col("amount") <= 0) |
-    (F.col("customer_id").isNull())
+   
 )
 
 # Clean transactions are the remainder
