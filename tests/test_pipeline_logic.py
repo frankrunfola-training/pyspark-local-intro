@@ -1,7 +1,6 @@
 import pytest
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql import types as T
 
 
 @pytest.fixture(scope="session")
@@ -9,10 +8,13 @@ def spark():
     spark = (
         SparkSession.builder
         .appName("training-pyspark-local-tests")
-        .master("local[*]")
+        .master("local[2]")
         .config("spark.ui.enabled", "false")
+        .config("spark.sql.shuffle.partitions", "2")
+        .config("spark.sql.session.timeZone", "UTC")
         .getOrCreate()
     )
+    spark.sparkContext.setLogLevel("ERROR")
     yield spark
     spark.stop()
 
@@ -47,22 +49,20 @@ def test_type_parsing_date_and_amount(spark):
 
 def test_quarantine_reason_priority(spark):
     rows = [
-        (None, 1, "2025-03-01 10:12:00", 10.0, "CoffeeCo"),     # missing txn_id
+        (None, 1, "2025-03-01 10:12:00", 10.0, "CoffeeCo"),      # missing txn_id
         ("1002", None, "2025-03-01 10:12:00", 10.0, "CoffeeCo"), # missing customer_id
-        ("1003", 1, None, 10.0, "CoffeeCo"),                    # bad timestamp
-        ("1004", 1, "2025-03-01 10:12:00", -1.0, "CoffeeCo"),   # bad amount
-        ("1005", 1, "2025-03-01 10:12:00", 10.0, ""),           # missing merchant
-        ("1006", 1, "2025-03-01 10:12:00", 10.0, "CoffeeCo"),   # valid
+        ("1003", 1, None, 10.0, "CoffeeCo"),                     # bad timestamp
+        ("1004", 1, "2025-03-01 10:12:00", -1.0, "CoffeeCo"),    # bad amount
+        ("1005", 1, "2025-03-01 10:12:00", 10.0, ""),            # missing merchant
+        ("1006", 1, "2025-03-01 10:12:00", 10.0, "CoffeeCo"),    # valid
     ]
     df = spark.createDataFrame(rows, ["txn_id", "customer_id", "txn_ts", "amount", "merchant"])
 
     # Type it similarly to your pipeline style
     staged = (
         df
-        .withColumn("txn_id", F.col("txn_id"))
         .withColumn("txn_ts_ts", F.to_timestamp("txn_ts", "yyyy-MM-dd HH:mm:ss"))
         .withColumn("txn_date", F.to_date("txn_ts_ts"))
-        .withColumn("merchant", F.col("merchant"))
         .withColumn("amount", F.col("amount").cast("double"))
     )
 
