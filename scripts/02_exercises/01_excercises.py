@@ -9,7 +9,7 @@
 # -----------------------------------------------------------------------
 # Description:
 #   Combined exercises (Select/Filter + Cleaning/Quarantine + KPIs + Joins).
-#   22 exercises total. Start easy, get progressively more difficult.
+#   24 exercises total. Start easy, get progressively more difficult.
 #   Fill in TODOs. No hints.
 #########################################################################
 
@@ -36,14 +36,10 @@ txns = (
 # Goal: Select specific columns from customers, transaction
 #########################################################################
 # TODO
-ex01_df = (
-    customers.select("customer_id", "first_name","last_name", "state","signup_date")
-)
+ex01_df = (customers.select("customer_id", "first_name","last_name", "state","signup_date"))
 ex01_df.show(n=3,truncate=False)
 
-ex01_df = (
-    txns.select("txn_id", "customer_id","txn_ts", "amount","merchant")
-)
+ex01_df = (txns.select("txn_id", "customer_id","txn_ts", "amount","merchant"))
 ex01_df.show(n=3,truncate=False)
 
 #########################################################################
@@ -54,9 +50,7 @@ ex01_df.show(n=3,truncate=False)
 #########################################################################
 # TODO
 '''
-ex02_df = (
-    customers.filter(F.col("state")=="CA")
-)
+ex02_df = (customers.filter(F.col("state")=="CA"))
 ex02_df.show(truncate=False)'''
 
 #########################################################################
@@ -162,7 +156,8 @@ ex09_df = (
     .filter(F.col("signup_date") >= F.lit("2025-03-01").cast("date"))
     .select("customer_id", "signup_date")
 )
-ex09_df.show(truncate=False)'''
+ex09_df.show(truncate=False)
+'''
 
 #########################################################################
 # EXERCISE 10 (Medium)
@@ -184,7 +179,8 @@ ex10_df = (
          .otherwise(F.lit("large"))
     )
 )
-ex10_df.show(truncate=False)'''
+ex10_df.show(truncate=False)
+'''
 
 #########################################################################
 # EXERCISE 11 (Medium)
@@ -202,7 +198,8 @@ customers_std = (
     .withColumn("last_name", F.trim(F.col("last_name")))
     .withColumn("state"     ,F.upper(F.trim(F.col("state"))))
 )
-customers_std.show(truncate=False)'''
+customers_std.show(truncate=False)
+'''
 
 #########################################################################
 # EXERCISE 12 (Medium)
@@ -211,7 +208,6 @@ customers_std.show(truncate=False)'''
 # And customers_clean as the remaining records
 #########################################################################
 # TODO
-
 # Column that evaluates to True/False per row.
 is_bad_first = F.col("first_name").isNull() | (F.trim(F.col("first_name")) == "")
 cust_quarantine = customers.filter(is_bad_first)
@@ -238,7 +234,50 @@ print("")
 #txns_quarantine.show(truncate=False)
 
 #########################################################################
-# EXERCISE 14 (Hard)
+# EXERCISE 14 (Medium -> Hard)
+#------------------------------------------------------------------------
+# Goal: Quarantine transactions where merchant does NOT exist in an allowed
+#       merchant reference table (allowed_merchants)
+#
+# Produce:
+#   - txns_bad_merchant
+#   - txns_good_merchant
+#
+# Notes:
+# - This is the same “reference integrity” idea as FK checks, but easier:
+#   it’s a single-column lookup instead of a full customer join.
+#########################################################################
+# TODO
+'''
+# Normalize merchant for matching (trim + lowercase)
+txns_norm = (
+    txns_clean
+    # TODO: create a normalized merchant column
+)
+
+allowed_norm = (
+    allowed_merchants
+    # TODO: normalize merchant the same way + drop duplicates
+)
+
+# txns with merchant NOT found in allowed_merchants (quarantine)
+txns_bad_merchant = (
+    # TODO: join with left_anti using the normalized merchant key
+)
+
+# txns with merchant found in allowed_merchants (clean)
+txns_good_merchant = (
+    # TODO: join with left_semi using the normalized merchant key
+)
+
+print(f"txns_good_merchant: ${txns_good_merchant.count()}")
+print(f"txns_bad_merchant: ${txns_bad_merchant.count()}")
+print("")
+'''
+
+
+#########################################################################
+# EXERCISE 15 (Hard)
 #------------------------------------------------------------------------
 # Goal: Add a quarantine_reason column to txns_quarantine with values:
 #   - "non_positive_amount" when amount <= 0
@@ -255,15 +294,16 @@ txns_quarantine_reasoned = (
           .when(F.col("amount")<=0,F.lit("non_positive_amount"))
           .otherwise(F.lit(None)))
 )
-txns_quarantine_reasoned.show(truncate=False)'''
+txns_quarantine_reasoned.show(truncate=False)
+'''
 
 #########################################################################
-# EXERCISE 15 (Hard)
+# EXERCISE 16 (Hard)
 #------------------------------------------------------------------------
 # Goal: Quarantine transactions where customer_id does NOT exist in customers_clean
 # Produce:
-# - txns_bad_fk
-# - txns_good_fk
+#   - txns_bad_fk
+#   - txns_good_fk
 #########################################################################
 # TODO
 '''
@@ -280,11 +320,13 @@ txns_good_fk = txns.join(
     how="left_semi"  #“rows in left that do match” (exactly clean)
 )
 
-print("txns_good_fk:", txns_good_fk.count(), "txns_bad_fk:", txns_bad_fk.count())'''
+print(f"txns_good_fk: ${txns_good_fk.count()}")
+print(f"txns_bad_fk: ${txns_bad_fk.count()}")
+print("")'''
 
 
 #########################################################################
-# EXERCISE 16 (Hard)
+# EXERCISE 17 (Hard)
 #------------------------------------------------------------------------
 # Goal: Quarantine orphan customers where customer_id has NO matching
 #       transactions in txns_clean
@@ -327,7 +369,7 @@ print(f"customers_orphan: ${customers_orphan.count()}")
 print("")'''
 
 #########################################################################
-# EXERCISE 17 (Hard)
+# EXERCISE 18 (Hard)
 #------------------------------------------------------------------------
 # Goal: Quarantine orphan transactions 
 #   Where txns_clean.customer_id has NO matching customer in cust_clean
@@ -370,7 +412,7 @@ print("")'''
 
 
 #########################################################################
-# EXERCISE 18 (Hard)
+# EXERCISE 19 (Hard)
 #------------------------------------------------------------------------
 # Goal: Quarantine transactions where (state, txn_type) does NOT exist
 #       in an allowed reference table (allowed_pairs)
@@ -395,6 +437,20 @@ print("")'''
 #########################################################################
 # TODO
 # 1) Normalize both txns_clean and allowed_pairs for matching
+'''
+# Reference table: allowed (state, txn_type) combinations
+allowed_pairs = spark.createDataFrame(
+    [
+        ("NY", "deposit"),
+        ("NY", "withdrawal"),
+        ("CA", "deposit"),
+        ("CA", "withdrawal"),
+        ("TX", "deposit"),
+        ("FL", "withdrawal"),
+    ],
+    ["state", "txn_type"]
+)
+
 txns_norm = (
     txns_clean
     .withColumn("state_norm", F.upper(F.trim(F.col("state"))))
@@ -432,11 +488,12 @@ txns_bad_ref = txns_missing_state.unionByName(txns_missing_type).unionByName(txn
 
 print("txns_bad_ref:", txns_bad_ref.count())
 print("txns_good_ref:", txns_good_ref.count())
-
 print("")
+'''
+
 
 #########################################################################
-# EXERCISE 19 (Hard)
+# EXERCISE 20 (Hard)
 #------------------------------------------------------------------------
 # Goal: Join txns_good_fk to customers_clean (left join) and return:
 # txn_id, customer_id, first_name, state, amount, merchant
@@ -448,7 +505,7 @@ enriched_txns = (
 enriched_txns.show(truncate=False)'''
 
 #########################################################################
-# EXERCISE 20 (Hard)
+# EXERCISE 21 (Hard)
 #------------------------------------------------------------------------
 # Goal: Build customer KPIs from txns_good_fk:
 # - txn_count
@@ -464,7 +521,7 @@ customer_kpis = (
 customer_kpis.show(truncate=False)'''
 
 #########################################################################
-# EXERCISE 21 (Hard -> Very Hard)
+# EXERCISE 22 (Hard -> Very Hard)
 #------------------------------------------------------------------------
 # Goal: Add last_txn_ts (max txn_ts) to customer_kpis
 # Return columns: customer_id, txn_count, total_spend, avg_spend, last_txn_ts
@@ -477,7 +534,7 @@ customer_kpis_with_last = (
 customer_kpis_with_last.show(truncate=False)'''
 
 #########################################################################
-# EXERCISE 22 (Very Hard)
+# EXERCISE 23 (Very Hard)
 #------------------------------------------------------------------------
 # Goal: Create customer_analytics by joining customers_clean to customer_kpis_with_last.
 # Fill null KPI values with:
@@ -490,10 +547,11 @@ customer_kpis_with_last.show(truncate=False)'''
 customer_analytics = (
 
 )
-customer_analytics.orderBy(F.desc("total_spend")).show(truncate=False)'''
+customer_analytics.orderBy(F.desc("total_spend")).show(truncate=False)
+'''
 
 #########################################################################
-# EXERCISE 23 (Very Hard)
+# EXERCISE 24 (Very Hard)
 #------------------------------------------------------------------------
 # Goal: Write outputs (overwrite mode) to:
 # - data/out/customers_clean
