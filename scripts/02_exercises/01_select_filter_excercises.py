@@ -49,7 +49,9 @@ ex01_df.show(n=3,truncate=False)
 # TODO
 '''
 ex02_df = (customers.filter(F.col("state")=="CA"))
-ex02_df.show(truncate=False)'''
+ex02_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 03 (Easy)
 #------------------------------------------------------------------------
@@ -63,7 +65,9 @@ ex03_df = (
     .filter(F.col("amount")>50)
     .select("txn_id","customer_id","amount")
 )
-ex03_df.show(truncate=False)'''
+ex03_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 04 (Easy)
 #------------------------------------------------------------------------
@@ -77,7 +81,9 @@ ex04_df = (
     .filter(F.col("merchant")=="ElectroMart")
     .select("txn_id","customer_id","merchant","amount")
 )
-ex04_df.show(truncate=False)'''
+ex04_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 05 (Easy)
 #------------------------------------------------------------------------
@@ -91,7 +97,9 @@ ex05_df = (
     .filter(F.col("customer_id").isin(1,2,3))
     .select("txn_id","customer_id","txn_ts","amount")
 )
-ex05_df.show(truncate=False)'''
+ex05_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 06 (Easy)
 # Goal: Filter customers where first_name is missing OR blank
@@ -104,7 +112,9 @@ ex06_df = (
     .filter((F.col("first_name").isNull()) | (F.trim(F.col("first_name"))==""))
     .select("customer_id","first_name","last_name")
 )
-ex06_df.show(truncate=False)'''
+ex06_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 07 (Easy -> Medium)
 #------------------------------------------------------------------------
@@ -118,7 +128,9 @@ ex07_df = (
     .filter(F.col("amount").between(10,100))
     .select("txn_id","customer_id","amount","merchant")
 )
-ex07_df.show(truncate=False)'''
+ex07_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 08 (Easy -> Medium)
 #------------------------------------------------------------------------
@@ -132,7 +144,9 @@ ex08_df = (
     .filter((F.col("merchant")!="GroceryTown") & (F.col("amount").between(10,100)))
     .select("txn_id","customer_id","amount","merchant")
 )
-ex08_df.show(truncate=False)'''
+ex08_df.show(truncate=False)
+'''
+
 #########################################################################
 # EXERCISE 09 (Medium)
 #------------------------------------------------------------------------
@@ -149,6 +163,7 @@ ex09_df = (
 )
 ex09_df.show(truncate=False)
 '''
+
 #########################################################################
 # EXERCISE 10 (Medium)
 #------------------------------------------------------------------------
